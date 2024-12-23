@@ -1,6 +1,7 @@
 import os
 import sys
 import pickle
+import dill
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
@@ -45,5 +46,14 @@ def evaluate_models(X_train, y_train, X_test, y_test, models):
             #report[model_name] = {"mse_test": mse_test, "mae_test": mae_test, "r2_test": r2_test}
             report[list(models.keys())[i]] = r2_test
         return report
-    except:
-        pass
+    except Exception as e:
+        raise CustomException(e,sys)
+
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return pickle.load(file_obj)
+
+    except Exception as e:
+        raise CustomException(e, sys)
+        
